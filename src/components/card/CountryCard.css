@@ -1,0 +1,12 @@
+.card {
+  border: 2px solid #fff;
+  width: 400px;
+  height: 350px;
+  margin: 0;
+  padding: 0;
+}
+
+.card-flag {
+  width: 200px;
+  aspect-ratio: 3/2;
+}
