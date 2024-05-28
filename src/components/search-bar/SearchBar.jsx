@@ -1,5 +1,5 @@
-import { useNavigate, Link } from "react-router-dom";
 import "./SearchBar.css";
+import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const SearchBar = () => {
@@ -52,32 +52,34 @@ const SearchBar = () => {
   };
 
   return (
-    <div>
-      <div className="search">
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="search"
-            onChange={handleSearch}
-            value={search}
-          />
-          <button type="submit">search</button>
-        </form>
-      </div>
+    <div className="search-bar">
+      <form className="search" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="search"
+          onChange={handleSearch}
+          value={search}
+          placeholder="Search for a country..."
+        />
+        <button type="submit">search</button>
+      </form>
+
       {show ? (
         <div className="countries-search">
           {/* Error Handler */}
           {error ? <div className="country-list">{error}</div> : null}
           {/* Show country list */}
-          {countries.length > 0
-            ? countries.map((country, i) => (
-                <div className="country-list" key={country.cca3 || i}>
-                  <Link to={`/country/${country.name.common}`}>
-                    {country.name.official}
-                  </Link>
-                </div>
-              ))
-            : null}
+          {countries.length > 0 ? (
+            countries.map((country, i) => (
+              <div className="country-list" key={country.cca3 || i}>
+                <Link to={`/country/${country.name.common}`}>
+                  {country.name.official}
+                </Link>
+              </div>
+            ))
+          ) : (
+            <div className="country-list">No Country found</div>
+          )}
         </div>
       ) : null}
     </div>

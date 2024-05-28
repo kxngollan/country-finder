@@ -1,0 +1,52 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  padding: 0 30px;
+  width: 100vw;
+  height: 100vh;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(239, 239, 239);
+  height: 32px;
+  width: 70px;
+  padding: 2px;
+  border: none;
+  font-size: 1rem;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+img {
+  aspect-ratio: 3/2;
+}
+
+.countries {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 60px;
+  margin-top: 60px;
+}
+
+.pagination button {
+  border-radius: 0;
+}
+
+.pagination button:hover,
+.activePage {
+  background-color: blue;
+  color: #fff;
+}

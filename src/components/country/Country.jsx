@@ -1,5 +1,6 @@
-import { useState, useEffect, Link } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import "./Country.css";
 
 const useDocumentTitle = (title) => {
   useEffect(() => {
@@ -12,6 +13,8 @@ const Country = () => {
   const [borders, setBorders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   const { countryName } = useParams();
 
@@ -29,31 +32,32 @@ const Country = () => {
       }
       const data = await res.json();
       console.log(data[0]);
+      console.log(data[0].currencies?.[0]);
       setCountry(data[0]);
       const countryBorders = data[0].borders;
+      console.log(countryBorders);
+      let infoArray = [];
       if (countryBorders) {
         for (let i = 0; i < countryBorders.length; i++) {
-          fetchBorder(countryBorders[i]);
+          console.log(countryBorders[i]);
+          try {
+            const res = await fetch(
+              `https://restcountries.com/v3.1/alpha/${countryBorders[i]}`
+            );
+            const info = await res.json();
+
+            infoArray.push(info[0].name.common);
+          } catch (err) {
+            console.error(err);
+          }
         }
       }
+      setBorders(infoArray);
     } catch (err) {
       console.error(err);
       setError(err.message);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchBorder = async (country) => {
-    try {
-      const res = await fetch(
-        `https://restcountries.com/v3.1/alpha/${country}`
-      );
-      const data = await res.json();
-      console.log(data[0].name.common);
-      setBorders((prevBorders) => [...prevBorders, data[0].name.common]);
-    } catch (err) {
-      console.error(err);
     }
   };
 
@@ -63,45 +67,68 @@ const Country = () => {
 
   useDocumentTitle(country.name?.common || "Country Details");
 
+  const borderClick = (border) => {
+    navigate(`/country/${border}`);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <main>
+    <>
       <button onClick={() => window.history.back()}>Back</button>
       <div className="country-container">
-        <img src={country.flags?.png} alt={`${country.name?.common} flag`} />
-        <div>
+        <div className="image-container">
+          <img
+            className="main-flag"
+            src={country.flags?.png}
+            alt={`${country.name?.common} flag`}
+          />
+        </div>
+        <div className="info-container">
           <h1>{country.name?.official}</h1>
-          <div>
-            <p>
-              Native Name:{" "}
-              {country.name?.nativeName
-                ? Object.values(country.name?.nativeName)[0].official
-                : null}
-            </p>
-            <p>Population: {country.population}</p>
-            <p>Region: {country.region}</p>
-            <p>Sub Region: {country.subregion}</p>
-            <p>Capital: {country.capital?.[0]}</p>
-          </div>
-          <div>
-            <p>Top Level Domain: {country.tld?.[0]}</p>
-            <p>Currencies: </p>
+          <div className="information">
+            <div>
+              <p>
+                Native Name:{" "}
+                {country.name?.nativeName
+                  ? Object.values(country.name?.nativeName)[0].official
+                  : null}
+              </p>
+              <p>Population: {country.population}</p>
+              <p>Region: {country.region}</p>
+              <p>Sub Region: {country.subregion}</p>
+              <p>Capital: {country.capital?.[0]}</p>
+            </div>
+            <div>
+              <p>Top Level Domain: {country.tld?.[0]}</p>
+              <p>Currencies: {country.currencies?.[0]}</p>
 
-            <p>
-              Languages:{" "}
-              {country.languages
-                ? Object.values(country.languages).map((lang) => lang)
-                : null}
-            </p>
+              <p>
+                Languages:{" "}
+                {country.languages
+                  ? Object.values(country.languages).map((lang) => lang)
+                  : null}
+              </p>
+            </div>
           </div>
-          <div>
-            <p>Border Countries: </p>
-          </div>
+          {borders.length > 0 ? (
+            <div className="border">
+              <p onClick={() => console.log(borders)}>Border Countries: </p>
+              {borders.map((border, i) => (
+                <p
+                  key={i}
+                  className="border-country"
+                  onClick={() => borderClick(border)}
+                >
+                  {border}
+                </p>
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
-    </main>
+    </>
   );
 };
 

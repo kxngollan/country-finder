@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import "./Home.css";
-import SearchBar from "../search-bar/SearchBar";
 import CountryCard from "../card/CountryCard";
 import { Link } from "react-router-dom";
 
 const Home = () => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [countriesPerPage] = useState(25);
+  const [countriesPerPage] = useState(24);
   const [pages, setPages] = useState([]);
 
   // Helper function to paginate the countries data
@@ -43,10 +42,9 @@ const Home = () => {
   };
 
   return (
-    <main>
-      <SearchBar />
+    <div>
+      <h1>Countries</h1>
       <div className="container">
-        <h1>Countries</h1>
         <div className="countries">
           {pages[currentPage]?.map((country, i) => (
             <Link key={i} to={`/country/${country.name.common}`}>
@@ -56,13 +54,17 @@ const Home = () => {
         </div>
         <div className="pagination">
           {pages.map((_, index) => (
-            <button key={index} onClick={() => goToPage(index)}>
+            <button
+              key={index}
+              onClick={() => goToPage(index)}
+              className={index === currentPage ? `activePage` : null}
+            >
               {index + 1}
             </button>
           ))}
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 
