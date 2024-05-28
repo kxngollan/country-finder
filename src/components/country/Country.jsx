@@ -31,15 +31,13 @@ const Country = () => {
         throw new Error(`Failed to fetch data for ${countryName}`);
       }
       const data = await res.json();
-      console.log(data[0]);
-      console.log(data[0].currencies?.[0]);
+
       setCountry(data[0]);
       const countryBorders = data[0].borders;
-      console.log(countryBorders);
+
       let infoArray = [];
       if (countryBorders) {
         for (let i = 0; i < countryBorders.length; i++) {
-          console.log(countryBorders[i]);
           try {
             const res = await fetch(
               `https://restcountries.com/v3.1/alpha/${countryBorders[i]}`
@@ -114,7 +112,7 @@ const Country = () => {
           </div>
           {borders.length > 0 ? (
             <div className="border">
-              <p onClick={() => console.log(borders)}>Border Countries: </p>
+              <p>Border Countries: </p>
               {borders.map((border, i) => (
                 <p
                   key={i}

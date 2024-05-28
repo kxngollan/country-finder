@@ -47,7 +47,6 @@ const SearchBar = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!search) return;
-    console.log("searching");
     navigate(`search/${search}`);
   };
 
@@ -59,6 +58,7 @@ const SearchBar = () => {
           name="search"
           onChange={handleSearch}
           value={search}
+          autoComplete="off"
           placeholder="Search for a country..."
         />
         <button type="submit">search</button>

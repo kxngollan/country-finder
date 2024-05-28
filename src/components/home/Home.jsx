@@ -25,7 +25,7 @@ const Home = () => {
         throw new Error("Failed to fetch countries");
       }
       const data = await res.json();
-      console.log(data);
+
       setPages(paginate(data, countriesPerPage));
     } catch (err) {
       console.log(err);

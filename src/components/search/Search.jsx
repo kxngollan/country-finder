@@ -19,7 +19,6 @@ const Search = () => {
   };
 
   const fetchCountry = async () => {
-    console.log(name);
     try {
       const res = await fetch(`https://restcountries.com/v3.1/name/${name}`);
       if (!res.ok) {
