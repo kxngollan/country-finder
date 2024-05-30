@@ -8,7 +8,6 @@ import {
 import Header from "./components/header/Header";
 import Home from "./components/home/Home";
 import Country from "./components/country/Country";
-import SearchBar from "./components/search-bar/SearchBar";
 import Search from "./components/search/Search";
 
 const App = () => {
@@ -16,7 +15,6 @@ const App = () => {
     <Router>
       <Header />
       <main>
-        <SearchBar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/country/:countryName" element={<Country />} />

@@ -1,10 +1,11 @@
+import "./Country.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import "./Country.css";
+import Loader from "../loader/Loader";
 
 const useDocumentTitle = (title) => {
   useEffect(() => {
-    document.title = title;
+    document.title = `${title} - Country Finder`;
   }, [title]);
 };
 
@@ -32,7 +33,12 @@ const Country = () => {
       }
       const data = await res.json();
 
+      console.log(data[0]);
+
       setCountry(data[0]);
+
+      console.log(data[0].currencies);
+
       const countryBorders = data[0].borders;
 
       let infoArray = [];
@@ -69,7 +75,8 @@ const Country = () => {
     navigate(`/country/${border}`);
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loader />;
+
   if (error) return <p>Error: {error}</p>;
 
   return (
@@ -100,12 +107,18 @@ const Country = () => {
             </div>
             <div>
               <p>Top Level Domain: {country.tld?.[0]}</p>
-              <p>Currencies: {country.currencies?.[0]}</p>
+              <p
+                onClick={() =>
+                  console.log(Object.keys(country.currencies)[0].name)
+                }
+              >
+                Currencies: {country.currencies?.[0]?.name}
+              </p>
 
               <p>
                 Languages:{" "}
                 {country.languages
-                  ? Object.values(country.languages).map((lang) => lang)
+                  ? Object.values(country.languages).map((lang) => `${lang} `)
                   : null}
               </p>
             </div>
